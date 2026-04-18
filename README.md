@@ -1,6 +1,6 @@
 # CommonLibSSE Sample Plugin
 
-Follow along with me as I fumble and stumble my way through this. I have no idea what I am doing. It will be fun. Like wathing a train wreck in slow motion.
+Follow along with me as I fumble and stumble my way through this. I have no idea what I am doing. It will be fun. Like watching a train wreck in slow motion.
 
 First, all credit belong to John Stewart from GitLabs. He created all of this. I'm just learning how to make it work. So I hope this is ok.
 
