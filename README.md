@@ -1,4 +1,13 @@
 # CommonLibSSE Sample Plugin
+
+Follow along with me as I fumble and stumble my way through this. I have no idea what I am doing. It will be fun. Like wathing a train wreck in slow motion.
+
+First, all credit belong to John Stewart from GitLabs. He created all of this. I'm just learning how to make it work. So I hope this is ok.
+
+I am not sure how this works but I am sorta kind of new to coding. I wanted to learn how to make mods for the game Skyrim. I came across https://gitlab.com/jpstewart/commonlibsse-sample-plugin which uses the CommonLibSSE-NG library or API not sure what to call it, to learn how plug-ins work. Well this is where the learning came in. First I had never heard of Git, GitHub, or GitLabs. Obviously I learned how to use git to clone a repository. That is really as far as I got. Thus far nothing works. I got vcpkg installed. This thing is a nightmare. I hate it. I have Cmake installed. Hate it too. Visual Studio 2026 installed. So, here I am, over a week after starting something I thought would be difficult but I could figure it out. I have made a bunch of changes trying to get this working. I will try by best to document what I have done and why. No one has worked on the original project from GitLabs in 3 years. Thus far I am just trying to get through the Cmake and vcpkg config part. At one point I was getting through the configuration part of Cmake and vcpkg. I learned a lot about how Cmake and vpckg works using vcpkg.json, vcpkg-configuration.json, CMakePresets.json, CmakeLists.txt, json schemas, manifests, keychains, ports, overlays, packages, dependicies, schema versions, and on and on it goes. Oh and how I aboslutly cannot stand vcpgk and baseline hashes. I don't get it, I don't understand it. I can never find the correct hash. Its never the latest commit. It gets out of date. It's not valid. vcpkg seems to store data in 1000 different locations on your PC. Ok so that's kind of the background.
+
+Everything below this is all made by John Stewart. I may edit this at some point when I get this working. So utter newbies can follow along my learning journey.
+
 A sample SKSE plugin developed in C++. This project is meant to be used both as a template for modern SKSE plugin
 development, when starting a new project, or as a tutorial project for those new to CommonLibSSE development who want a
 complete and modern project from which to learn.
