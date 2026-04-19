@@ -1,5 +1,16 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.30.9)
+
+message("The current version of CMAKE is " CMAKE_VERSION)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+set(CMAKE_MESSAGE_LOG_LEVEL "Verbose")
+set(CMAKE_FIND_DEBUG_MODE TRUE)
+set(VCPKG_TRACE_FIND_PACKAGE OFF)
+endif()
+
 message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
+set(VcpkgEnableManifest True)
+
 
 ########################################################################################################################
 ## Define project
@@ -14,6 +25,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 
 include(GNUInstallDirs)
+
+set(PACKAGE_PREFIX_DIR ${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/x64-windows-skse)
 
 configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc.in
@@ -31,29 +44,23 @@ set(sources
 
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 
-set(tests
-        test/HitCounterManager.cpp)
+set(tests test/HitCounterManager.cpp)
 
-source_group(
-        TREE ${CMAKE_CURRENT_SOURCE_DIR}
-        FILES
-        ${headers}
-        ${sources}
-        ${tests})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${headers} ${sources} ${tests})
 
 #########################################################################################################################
 ### Build options
 #########################################################################################################################
 message("Options:")
-option(BUILD_TESTS "Build unit tests." OFF)
+option(BUILD_TESTS "Build unit tests." On)
 message("\tTests: ${BUILD_TESTS}")
 
 ########################################################################################################################
 ## Configure target DLL
 ########################################################################################################################
-find_package(CommonLibSSE CONFIG REQUIRED)
-find_package(ryml CONFIG REQUIRED)
-find_path(ARTICUNO_INCLUDE_DIRS "articuno/articuno.h")
+find_package(CommonLibSSE CONFIG REQUIRED Path ${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/x64-windows-skse/share/CommonLibSSE)
+find_package(ryml CONFIG REQUIRED Path ${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/x64-windows-skse/share/ryml)
+find_path(ARTICUNO_INCLUDE_DIRS "articuno/articuno.h" Path ${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/x64-windows-skse/include/articuno)
 
 add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${headers} ${sources})
 add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
