@@ -1,6 +1,6 @@
 #pragma once
 
-#include <RE/Skyrim.h>
+#include "RE/Skyrim.h"
 
 namespace Sample {
 #pragma warning(push)
