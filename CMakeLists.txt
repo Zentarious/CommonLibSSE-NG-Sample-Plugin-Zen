@@ -29,19 +29,6 @@ include(GNUInstallDirs)
 
 set(PACKAGE_PREFIX_DIR ${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/x64-windows-skse)
 
-include(FetchContent)
-
-FetchContent_Declare(c4core
-    GIT_REPOSITORY https://github.com/biojppm/c4core.git
-    GIT_TAG master
-)
-FetchContent_Declare(ryml
-    GIT_REPOSITORY https://github.com/biojppm/rapidyaml.git
-    GIT_TAG master
-    GIT_SUBMODULES_RECURSE ON  # Important: ensures c4core submodule is fetched
-)
-FetchContent_MakeAvailable(c4core ryml)
-
 configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc.in
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc
@@ -72,8 +59,9 @@ message("\tTests: ${BUILD_TESTS}")
 ########################################################################################################################
 ## Configure target DLL
 ########################################################################################################################
-find_package(CommonLibSSE CONFIG REQUIRED Path ${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/x64-windows-skse/share/CommonLibSSE)
-find_path(ARTICUNO_INCLUDE_DIRS "articuno/articuno.h" Path ${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/x64-windows-skse/include/articuno)
+find_package(CommonLibSSE CONFIG REQUIRED)
+find_package(ryml CONFIG REQUIRED)
+find_path(ARTICUNO_INCLUDE_DIRS "articuno/articuno.h")
 
 add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${headers} ${sources})
 
