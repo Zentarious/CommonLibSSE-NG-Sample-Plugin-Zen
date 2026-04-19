@@ -1,6 +1,6 @@
-#include <Sample/HitCounterManager.h>
+#include "Sample/HitCounterManager.h"
 
-#include <catch.hpp>
+#include "catch.hpp"
 
 using namespace Sample;
 
