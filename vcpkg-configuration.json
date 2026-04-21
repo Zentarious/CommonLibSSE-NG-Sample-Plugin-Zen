@@ -4,22 +4,20 @@
     "repository": "https://github.com/microsoft/vcpkg.git",
     "baseline": "256acc64012b23a13041d8705805e1f23b43a024"
   },
-    "registries": [
-      {
-        "kind": "git",
-        "baseline": "6309841a1ce770409708a67a9ba5c26c537d2937",
-        "repository": "https://gitlab.com/colorglass/vcpkg-colorglass",
-        "packages": [
-          "articuno",
-          "bethesda-skyrim-scripts",
-          "commonlibsse-ng",
-          "gluino",
-          "script-extender-common",
-          "skse"
-        ]
-      }
-    ],
-    "overlay-triplets": [
-      "${sourceDir}/cmake"
-    ]
+  "registries": [
+    {
+      "kind": "git",
+      "repository": "https://github.com/Zentarious/CommonLibSSE-NG-Zen-Repository.git",
+      "baseline": "375e32b1825bd198c50eb4a47f22530d4d2c16ed",
+      "packages": [
+        "articuno",
+        "bethesda-skyrim-scripts",
+        "commonlibsse-ng",
+        "gluino",
+        "script-extender-common",
+        "skse"
+      ]
+    }
+  ],
+    "overlay-triplets": [ "${sourceDir}/cmake" ]
   }
