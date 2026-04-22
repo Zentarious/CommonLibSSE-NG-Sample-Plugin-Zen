@@ -8,7 +8,7 @@
     {
       "kind": "git",
       "repository": "https://github.com/Zentarious/CommonLibSSE-NG-Zen-Repository.git",
-      "baseline": "583a8b4a9121652c84bb04882f8313cc77d57aa4",
+      "baseline": "d5fe0474d4ff64552e674c3f8321fcdd2d2fdf99",
       "packages": [
         "articuno",
         "bethesda-skyrim-scripts",
