@@ -1,17 +1,10 @@
 cmake_minimum_required(VERSION 3.30.9)
 
-message("The current version of CMAKE is " CMAKE_VERSION)
-
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_MESSAGE_LOG_LEVEL "Verbose")
     set(CMAKE_FIND_DEBUG_MODE TRUE)
     set(VCPKG_TRACE_FIND_PACKAGE OFF)
 endif()
-
-message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
-
-set(VcpkgEnableManifest True)
-
 
 ########################################################################################################################
 ## Define project CommonLibSSESamplePlugin
@@ -52,37 +45,42 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${headers} ${sources} ${test
 #########################################################################################################################
 ### Build options
 #########################################################################################################################
-message("Options:")
-option(BUILD_TESTS "Build unit tests." off)
-message("\tTests: ${BUILD_TESTS}")
+option(BUILD_TESTS "Build unit tests." ON)
+
+# Use the 'STATUS' keyword so it's formatted correctly in the console
+message(STATUS "Build configuration summary:")
+message(STATUS "  Tests enabled: ${BUILD_TESTS}")
 
 ########################################################################################################################
 ## Configure target DLL
 ########################################################################################################################
-find_package(CommonLibSSE CONFIG REQUIRED)
+
+# 1. First, find standard packages that have "Config" files
 find_package(ryml CONFIG REQUIRED)
-find_path(ARTICUNO_INCLUDE_DIRS "articuno/articuno.h")
 
-add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${headers} ${sources})
+# 2. CREATE the target (This must come before you try to give it folders or libraries)
+add_library(${PROJECT_NAME} SHARED ${headers} ${sources})
 
-add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
+# 3. Tell the target where to find HEADERS
+target_include_directories(${PROJECT_NAME} PRIVATE 
+    "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include"
+)
 
-target_include_directories(${PROJECT_NAME}
-        PRIVATE
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/src>
-        $<INSTALL_INTERFACE:src>
-        ${ARTICUNO_INCLUDE_DIRS})
-
-target_include_directories(${PROJECT_NAME}
-        PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
-
+# 4. Link standard LIBRARIES
 target_link_libraries(${PROJECT_NAME} PRIVATE ryml::ryml)
 
-target_precompile_headers(${PROJECT_NAME}
-        PRIVATE
-        src/PCH.h)
+# 5. Set the Skyrim "NG" (Next Gen) magic flags
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    SKSE_SUPPORT_XBYAK=1
+    COMMONLIBSSE_NG_SUPPORT=1
+)
+
+# 6. Set up Precompiled Headers (helps Skyrim mods build faster)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/PCH.h")
+    target_precompile_headers(${PROJECT_NAME} PRIVATE src/PCH.h)
+endif()
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/Sample"
         DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
