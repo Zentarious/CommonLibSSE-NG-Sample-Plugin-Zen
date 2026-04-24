@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.30.9)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CMAKE_MESSAGE_LOG_LEVEL "Verbose")
-    set(CMAKE_FIND_DEBUG_MODE TRUE)
-    set(VCPKG_TRACE_FIND_PACKAGE OFF)
+    set(CMAKE_MESSAGE_LOG_LEVEL Debug)
+    message(STATUS "Current log level is: ${current_level}")
+    set(CMAKE_FIND_DEBUG_MODE FALSE)
+    set(VCPKG_TRACE_FIND_PACKAGE ON)
 endif()
 
 ########################################################################################################################
@@ -20,7 +21,7 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 
 include(GNUInstallDirs)
 
-set(PACKAGE_PREFIX_DIR ${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/x64-windows-skse)
+set(PACKAGE_PREFIX_DIR ${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET})
 
 configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc.in
@@ -55,20 +56,21 @@ message(STATUS "  Tests enabled: ${BUILD_TESTS}")
 ## Configure target DLL
 ########################################################################################################################
 
-# 1. First, find standard packages that have "Config" files
+# Find all required packages
 find_package(ryml CONFIG REQUIRED)
+find_package(Catch2 CONFIG REQUIRED)
 
-# 2. CREATE the target (This must come before you try to give it folders or libraries)
+# CREATE the target
 add_library(${PROJECT_NAME} SHARED ${headers} ${sources})
 
-# 3. Tell the target where to find HEADERS
+# Tell the target where to find HEADERS
+# Note: find_package should handle vcpkg includes automatically
 target_include_directories(${PROJECT_NAME} PRIVATE 
-    "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
-# 4. Link standard LIBRARIES
+# Link libraries (find_package handles paths)
 target_link_libraries(${PROJECT_NAME} PRIVATE ryml::ryml)
 
 # 5. Set the Skyrim "NG" (Next Gen) magic flags
