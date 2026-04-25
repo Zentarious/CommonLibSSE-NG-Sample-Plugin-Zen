@@ -99,13 +99,15 @@
         "vcpkg",
         "win32-unicode",
         "x64",
+		"build-tests",
         "msvc"
       ],
-      "displayName": "Debug",
-      "description": "Debug build for testing.",
+      "displayName": "Debugging for MSVC",
+      "description": "Debug build for MSVC testing.",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/debug-msvc",
       "cacheVariables": {
+        "CMAKE_MESSAGE_LOG_LEVEL": "DEBUG",
         "VCPKG_INSTALL_OPTIONS": "--debug",
         "CMAKE_BUILD_TYPE": {
           "type": "STRING",
@@ -121,10 +123,11 @@
         "vcpkg",
         "win32-unicode",
         "x64",
+		"build-tests",
         "msvc"
       ],
-      "displayName": "Release",
-      "description": "Optimized release build.",
+      "displayName": "Release for MSVC",
+      "description": "Optimized MSVC release build.",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/release-msvc",
       "cacheVariables": {
@@ -141,13 +144,15 @@
         "vcpkg",
         "win32-unicode",
         "x64",
+		"build-tests",
         "clang-cl"
       ],
-      "displayName": "Debug",
-      "description": "Debug build for testing.",
+      "displayName": "Debuging for Clang-cl",
+      "description": "Debug build for Clang-cl testing.",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/debug-clang",
       "cacheVariables": {
+        "CMAKE_MESSAGE_LOG_LEVEL": "DEBUG",
         "VCPKG_INSTALL_OPTIONS": "--debug",
         "CMAKE_BUILD_TYPE": {
           "type": "STRING",
@@ -162,10 +167,11 @@
         "vcpkg",
         "win32-unicode",
         "x64",
+		"build-tests",
         "clang-cl"
       ],
-      "displayName": "Release",
-      "description": "Optimized release build using clang-cl.",
+      "displayName": "Release for Clang-cl",
+      "description": "Optimized release build for Clang-cl.",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/release-clang",
       "cacheVariables": {
@@ -185,11 +191,12 @@
         "build-tests",
         "msvc"
       ],
-      "displayName": "DebugAll",
-      "description": "Debug build for testing.",
+      "displayName": "Debug All using MSVC",
+      "description": "Debug build for running all tests testing.",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/mscv-testall",
       "cacheVariables": {
+        "CMAKE_MESSAGE_LOG_LEVEL": "DEBUG",
         "VCPKG_INSTALL_OPTIONS": "--debug",
         "CMAKE_BUILD_TYPE": {
           "type": "STRING",
@@ -210,7 +217,8 @@
         "name": "buildpreset-debug-msvc",
         "displayName": "Debug (MSVC)",
         "configurePreset": "msvc-debug-preset",
-        "description": "Debug build for testing."
+        "description": "Debug build for testing.",
+        "verbose": true
       },
       {
         "name": "buildpreset-release-clang-cl",
@@ -222,7 +230,15 @@
         "name": "buildpreset-debug-clang-cl",
         "displayName": "Debug (Clang-cl)",
         "configurePreset": "clang-cl-debug-preset",
-        "description": "Debug clang-cl build for testing."
+        "description": "Debug clang-cl build for testing.",
+        "verbose": true
+      },
+	        {
+        "name": "buildpreset-debug-MSVC-TestAll",
+        "displayName": "Debug-TestAll (MSVC)",
+        "configurePreset": "msvc-testall-preset",
+        "description": "Debug clang-cl build for testing.",
+        "verbose": true
       }
     ],
     "testPresets": [
@@ -238,17 +254,17 @@
           "stopOnFailure": false
         }
       },
-        {
-            "name": "tests-unit",
-            "displayName": "Unit Tests",
-            "description": "Runs tests that do not require any Skyrim module loaded into the process.",
-            "inherits": "tests-all",
-            "filter": {
-                "exclude": {
-                    "label": "[integration],[e2e]"
-                }
-            }
-        },
+      {
+        "name": "tests-unit",
+        "displayName": "Unit Tests",
+        "description": "Runs tests that do not require any Skyrim module loaded into the process.",
+        "inherits": "tests-all",
+        "filter": {
+          "exclude": {
+            "label": "[integration],[e2e]"
+          }
+        }
+      },
         {
             "name": "tests-integration",
             "displayName": "Integration Tests",
