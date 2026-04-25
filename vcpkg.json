@@ -4,47 +4,47 @@
   "version-string": "1.0.0",
   "description": "Sample SKSE plugin based on CommonLibSSE, for unified AE/SE/VR deployment.",
   "license": "Apache-2.0",
-  "default-features": [
-    "plugin",
-    "scripts-dev",
-    "tests"
-  ],
-  "features": {
-    "plugin": {
-      "description": "Build the SKSE plugin.",
-      "dependencies": [
-        "articuno",
-        "commonlibsse-ng"
-      ]
-    },
-    "scripts": {
-      "description": "Install Papyrus sources for this program to develop on top of it."
-    },
-    "scripts-dev": {
-      "description": "Install Papyrus sources necessary to develop scripts for this plugin.",
-      "dependencies": [
-        "bethesda-skyrim-scripts",
-        {
-          "name": "skse",
-          "default-features": false,
-          "features": [
-            "scripts"
-          ]
+    "features": {
+        "scripts": {
+            "description": "Install Papyrus sources for this program to develop on top of it."
+        },
+        "scripts-dev": {
+            "description": "Install Papyrus sources necessary to develop scripts for this plugin.",
+            "dependencies": [
+                "bethesda-skyrim-scripts",
+                {
+                    "name": "skse",
+                    "default-features": false,
+                    "features": [
+                        "scripts"
+                    ]
+                }
+            ]
+        },
+        "plugin": {
+            "description": "Build the SKSE plugin.",
+            "dependencies": [
+                "articuno",
+                "commonlibsse-ng"
+            ]
+        },
+        "tests": {
+            "description": "Build tests for the SKSE plugin.",
+            "dependencies": [
+                {
+                    "name": "commonlibsse-sample-plugin",
+                    "default-features": false,
+                    "features": [
+                        "plugin"
+                    ]
+                },
+                "catch2"
+            ]
         }
-      ]
     },
-    "tests": {
-      "description": "Build tests for the SKSE plugin.",
-      "dependencies": [
-        "catch2",
-        {
-          "name": "commonlibsse-sample-plugin",
-          "default-features": false,
-          "features": [
-            "plugin"
-          ]
-        }
-      ]
-    }
-  }
+    "default-features": [
+        "scripts-dev",
+        "plugin",
+        "tests"
+    ]
 }
