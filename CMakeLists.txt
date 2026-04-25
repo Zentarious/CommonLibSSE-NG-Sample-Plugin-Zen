@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.30.9)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CMAKE_MESSAGE_LOG_LEVEL Debug)
-    message(STATUS "Current log level is: ${current_level}")
+    set(CMAKE_MESSAGE_LOG_LEVEL TRACE)
+    message(STATUS "Current log level is: ${CMAKE_MESSAGE_LOG_LEVEL}")
     set(CMAKE_FIND_DEBUG_MODE FALSE)
     set(VCPKG_TRACE_FIND_PACKAGE ON)
 endif()
@@ -10,11 +10,11 @@ endif()
 ########################################################################################################################
 ## Define project CommonLibSSESamplePlugin
 ########################################################################################################################
-project(
-        CommonLibSSESamplePlugin
-        VERSION 1.0.0
-        DESCRIPTION "A sample SKSE plugin built with CommonLibSSE."
-        LANGUAGES CXX)
+project(CommonLibSSESamplePlugin
+	VERSION 1.0.0
+    DESCRIPTION "A sample SKSE plugin built with CommonLibSSE."
+    LANGUAGES CXX)
+	
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
@@ -24,51 +24,67 @@ include(GNUInstallDirs)
 set(PACKAGE_PREFIX_DIR ${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET})
 
 configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc.in
-        ${CMAKE_CURRENT_BINARY_DIR}/version.rc
-        @ONLY)
+	${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc.in
+    ${CMAKE_CURRENT_BINARY_DIR}/version.rc
+    @ONLY)
 
 set(headers
-        include/Sample/Sample.h)
+	include/Sample/Sample.h)
 
 set(sources
-        src/Config.cpp
-        src/HitCounterManager.cpp
-        src/Main.cpp
-        src/Papyrus.cpp
+	src/Config.cpp
+    src/HitCounterManager.cpp
+    src/Main.cpp
+    src/Papyrus.cpp
+	${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 
-        ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+set(tests
+	test/HitCounterManager.cpp)
 
-set(tests test/HitCounterManager.cpp)
-
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${headers} ${sources} ${tests})
+source_group(
+	TREE ${CMAKE_CURRENT_SOURCE_DIR}
+	FILES
+	${headers}
+	${sources}
+	${tests})
 
 #########################################################################################################################
 ### Build options
 #########################################################################################################################
+message("Options:")
 option(BUILD_TESTS "Build unit tests." ON)
 
 # Use the 'STATUS' keyword so it's formatted correctly in the console
 message(STATUS "Build configuration summary:")
-message(STATUS "  Tests enabled: ${BUILD_TESTS}")
+message(STATUS "Tests enabled: ${BUILD_TESTS}")
 
 ########################################################################################################################
 ## Configure target DLL
 ########################################################################################################################
 
 # Find all required packages
+find_package(CommonLibSSE CONFIG REQUIRED)
 find_package(ryml CONFIG REQUIRED)
-find_package(Catch2 CONFIG REQUIRED)
+#find_package(Catch2 CONFIG REQUIRED)
+find_path(ARTICUNO_INCLUDE_DIRS "articuno/articuno.h")
 
 # CREATE the target
-add_library(${PROJECT_NAME} SHARED ${headers} ${sources})
+add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${headers} ${sources})
+add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
+#add_library(${PROJECT_NAME} SHARED ${headers} ${sources})
 
 # Tell the target where to find HEADERS
 # Note: find_package should handle vcpkg includes automatically
-target_include_directories(${PROJECT_NAME} PRIVATE 
-    "${CMAKE_CURRENT_SOURCE_DIR}/src"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include"
-)
+target_include_directories(${PROJECT_NAME} 
+    PRIVATE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/src>
+    $<INSTALL_INTERFACE:src>
+    ${ARTICUNO_INCLUDE_DIRS})
+
+target_include_directories(${PROJECT_NAME}
+    PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
 # Link libraries (find_package handles paths)
 target_link_libraries(${PROJECT_NAME} PRIVATE ryml::ryml)
