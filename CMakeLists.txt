@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.30.9)
+message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_MESSAGE_LOG_LEVEL TRACE)
     message(STATUS "Current log level is: ${CMAKE_MESSAGE_LOG_LEVEL}")
-    set(CMAKE_FIND_DEBUG_MODE FALSE)
+    set(CMAKE_FIND_DEBUG_MODE TRUE)
     set(VCPKG_TRACE_FIND_PACKAGE ON)
 endif()
 
@@ -21,7 +22,7 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 
 include(GNUInstallDirs)
 
-set(PACKAGE_PREFIX_DIR ${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET})
+#set(PACKAGE_PREFIX_DIR ${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET})
 
 configure_file(
 	${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc.in

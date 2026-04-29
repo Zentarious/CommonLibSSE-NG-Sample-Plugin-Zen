@@ -75,6 +75,7 @@
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "intelliSenseMode": "windows-clang-x64",
+          "configureArgs": [ "--trace-expand" ],
           "enableMicrosoftCodeAnalysis": true,
           "enableClangTidyCodeAnalysis": true
         }
@@ -99,7 +100,7 @@
         "vcpkg",
         "win32-unicode",
         "x64",
-		"build-tests",
+		    "build-tests",
         "msvc"
       ],
       "displayName": "Debugging for MSVC",
@@ -107,8 +108,9 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/debug-msvc",
       "cacheVariables": {
-        "CMAKE_MESSAGE_LOG_LEVEL": "DEBUG",
+        "CMAKE_MESSAGE_LOG_LEVEL": "TRACE",
         "VCPKG_INSTALL_OPTIONS": "--debug",
+        "VCPKG_VERBOSE": "ON",
         "CMAKE_BUILD_TYPE": {
           "type": "STRING",
           "value": "Debug"
@@ -123,7 +125,7 @@
         "vcpkg",
         "win32-unicode",
         "x64",
-		"build-tests",
+		    "build-tests",
         "msvc"
       ],
       "displayName": "Release for MSVC",
@@ -152,8 +154,9 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/debug-clang",
       "cacheVariables": {
-        "CMAKE_MESSAGE_LOG_LEVEL": "DEBUG",
+        "CMAKE_MESSAGE_LOG_LEVEL": "TRACE",
         "VCPKG_INSTALL_OPTIONS": "--debug",
+        "VCPKG_VERBOSE": "ON",
         "CMAKE_BUILD_TYPE": {
           "type": "STRING",
           "value": "Debug"
