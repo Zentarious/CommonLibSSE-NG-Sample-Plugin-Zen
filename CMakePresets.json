@@ -17,7 +17,7 @@
       "name": "vcpkg",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "c:/Coding/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_TARGET_TRIPLET": "x64-windows-skse",
         "VCPKG_HOST_TRIPLET": "x64-windows-skse",
         "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/cmake",
@@ -108,14 +108,10 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/debug-msvc",
       "cacheVariables": {
-        "CMAKE_MESSAGE_LOG_LEVEL": "TRACE",
-        "VCPKG_INSTALL_OPTIONS": "--debug",
-        "VCPKG_VERBOSE": "ON",
         "CMAKE_BUILD_TYPE": {
           "type": "STRING",
           "value": "Debug"
-        },
-        "buildCommandArgs": "-v"
+        }
       }
     },
     {
@@ -146,7 +142,7 @@
         "vcpkg",
         "win32-unicode",
         "x64",
-		"build-tests",
+		    "build-tests",
         "clang-cl"
       ],
       "displayName": "Debuging for Clang-cl",
@@ -154,9 +150,6 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/debug-clang",
       "cacheVariables": {
-        "CMAKE_MESSAGE_LOG_LEVEL": "TRACE",
-        "VCPKG_INSTALL_OPTIONS": "--debug",
-        "VCPKG_VERBOSE": "ON",
         "CMAKE_BUILD_TYPE": {
           "type": "STRING",
           "value": "Debug"
@@ -170,7 +163,7 @@
         "vcpkg",
         "win32-unicode",
         "x64",
-		"build-tests",
+		    "build-tests",
         "clang-cl"
       ],
       "displayName": "Release for Clang-cl",
@@ -220,8 +213,7 @@
         "name": "buildpreset-debug-msvc",
         "displayName": "Debug (MSVC)",
         "configurePreset": "msvc-debug-preset",
-        "description": "Debug build for testing.",
-        "verbose": true
+        "description": "Debug build for testing."
       },
       {
         "name": "buildpreset-release-clang-cl",
@@ -233,8 +225,7 @@
         "name": "buildpreset-debug-clang-cl",
         "displayName": "Debug (Clang-cl)",
         "configurePreset": "clang-cl-debug-preset",
-        "description": "Debug clang-cl build for testing.",
-        "verbose": true
+        "description": "Debug clang-cl build for testing."
       },
 	        {
         "name": "buildpreset-debug-MSVC-TestAll",
