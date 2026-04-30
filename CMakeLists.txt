@@ -53,7 +53,7 @@ source_group(
 ### Build options
 #########################################################################################################################
 message("Options:")
-option(BUILD_TESTS "Build unit tests." ON)
+option(BUILD_TESTS "Build unit tests." OFF)
 
 # Use the 'STATUS' keyword so it's formatted correctly in the console
 message(STATUS "Build configuration summary:")
@@ -66,13 +66,11 @@ message(STATUS "Tests enabled: ${BUILD_TESTS}")
 # Find all required packages
 find_package(CommonLibSSE CONFIG REQUIRED)
 find_package(ryml CONFIG REQUIRED)
-#find_package(Catch2 CONFIG REQUIRED)
 find_path(ARTICUNO_INCLUDE_DIRS "articuno/articuno.h")
 
 # CREATE the target
 add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${headers} ${sources})
 add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
-#add_library(${PROJECT_NAME} SHARED ${headers} ${sources})
 
 # Tell the target where to find HEADERS
 # Note: find_package should handle vcpkg includes automatically
@@ -87,19 +85,27 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
-# Link libraries (find_package handles paths)
-target_link_libraries(${PROJECT_NAME} PRIVATE ryml::ryml)
+# Link libraries
+target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        ryml::ryml)
+
 
 # 5. Set the Skyrim "NG" (Next Gen) magic flags
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-    SKSE_SUPPORT_XBYAK=1
-    COMMONLIBSSE_NG_SUPPORT=1
-)
+#target_compile_definitions(${PROJECT_NAME} PRIVATE
+#    SKSE_SUPPORT_XBYAK=1
+#    COMMONLIBSSE_NG_SUPPORT=1
+#)
 
 # 6. Set up Precompiled Headers (helps Skyrim mods build faster)
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/PCH.h")
-    target_precompile_headers(${PROJECT_NAME} PRIVATE src/PCH.h)
-endif()
+#if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/PCH.h")
+#    target_precompile_headers(${PROJECT_NAME} PRIVATE src/PCH.h)
+#endif()
+
+target_precompile_headers(${PROJECT_NAME}
+        PRIVATE
+        src/PCH.h)
+
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/Sample"
         DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")

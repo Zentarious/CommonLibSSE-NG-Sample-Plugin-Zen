@@ -1,5 +1,4 @@
 {
-  "overlay-ports": [ "c:/dev-ports" ],
   "default-registry": {
     "kind": "git",
     "repository": "https://github.com/microsoft/vcpkg.git",
@@ -9,7 +8,7 @@
     {
       "kind": "git",
       "repository": "https://github.com/Zentarious/CommonLibSSE-NG-Zen-Repository.git",
-      "baseline": "82812ee89232fdbf88bf531469ca72042551bb92",
+      "baseline": "90337deb76323e29486f3ddfdac3019600f92b4d",
       "packages": [
         "articuno",
         "bethesda-skyrim-scripts",
